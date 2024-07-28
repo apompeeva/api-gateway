@@ -1,11 +1,9 @@
-import logging
+from fastapi import FastAPI
+from app.endpoints.auth_endpoints import auth_router
+from app.endpoints.transaction_endpoints import transaction_router
 
 
-def get_greetings() -> str:
-    """Возвращает строку приветствия."""
-    return 'Hello World!'
+app = FastAPI()
 
-
-if __name__ == '__main__':
-    logging.basicConfig(level=logging.DEBUG)
-    logging.info(get_greetings())
+app.include_router(auth_router, tags=["auth"])
+app.include_router(transaction_router, tags=["trasaction"])
