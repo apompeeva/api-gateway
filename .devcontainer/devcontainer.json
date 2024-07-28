@@ -1,5 +1,5 @@
 {
-    "name": "SHIFT Python 2024",
+    "name": "api-gateway-pompeeva",
     "dockerComposeFile": "docker-compose.yml",
     "service": "app",
     "workspaceFolder": "/workspace",
@@ -37,7 +37,7 @@
         }
     },
     "mounts": [
-        "source=shift-python-2024,target=/commandhistory,type=volume",
+        "source=api-gateway-pompeeva,target=/commandhistory,type=volume",
         "source=${env:HOME}${env:USERPROFILE}/.kube,target=/usr/local/share/kube-localhost,type=bind"
     ],
     "remoteUser": "root"
