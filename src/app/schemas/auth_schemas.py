@@ -1,5 +1,6 @@
-from pydantic import BaseModel
 import requests
+from pydantic import BaseModel
+
 
 class RegisterRequest(BaseModel):
     login: str

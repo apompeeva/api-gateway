@@ -1,7 +1,7 @@
 from fastapi import FastAPI
+
 from app.endpoints.auth_endpoints import auth_router
 from app.endpoints.transaction_endpoints import transaction_router
-
 
 app = FastAPI()
 

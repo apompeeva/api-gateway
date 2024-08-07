@@ -1,7 +1,8 @@
-from fastapi import APIRouter, HTTPException, status, Depends
-from app.schemas.transaction_schemas import Transaction, ReportData
 import httpx
+from fastapi import APIRouter, Depends, HTTPException, status
+
 from app.endpoints.auth_endpoints import AUTH_SERVICE_URL
+from app.schemas.transaction_schemas import ReportData, Transaction
 
 transaction_router = APIRouter()
 

@@ -1,6 +1,7 @@
-from pydantic import BaseModel
-from enum import IntEnum
 from datetime import datetime
+from enum import IntEnum
+
+from pydantic import BaseModel
 
 
 class TransactionType(IntEnum):
