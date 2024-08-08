@@ -1,0 +1,9 @@
+[submodule "auth-service"]
+	path = auth-service
+	url = git@hub.mos.ru:shift-python/y2024/homeworks/apompeeva/auth-service.git
+[submodule "transaction-service"]
+	path = transaction-service
+	url = git@hub.mos.ru:shift-python/y2024/homeworks/apompeeva/transaction-service.git
+[submodule "face-verification-service"]
+	path = face-verification-service
+	url = git@hub.mos.ru:shift-python/y2024/homeworks/apompeeva/face-verification-service.git

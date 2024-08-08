@@ -1,0 +1,71 @@
+version: "3.8"
+
+services:
+    zookeeper:
+        image: bitnami/zookeeper:latest
+        ports:
+            - 2181:2181
+        environment:
+            - ALLOW_ANONYMOUS_LOGIN=yes
+
+    kafka:
+        image: bitnami/kafka:latest
+        ports:
+            - 9092:9092
+            - 9093:9093
+        environment:
+            - KAFKA_BROKER_ID=1
+            - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092
+            - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://127.0.0.1:9092
+            - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+            - ALLOW_PLAINTEXT_LISTENER=yes
+            - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CLIENT:PLAINTEXT
+            - KAFKA_CFG_LISTENERS=CLIENT://:9092
+            - KAFKA_CFG_ADVERTISED_LISTENERS=CLIENT://kafka:9092
+            - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=CLIENT
+        depends_on:
+            - zookeeper
+
+    auth:
+        env_file:
+          - .env
+        build:
+            context: ./auth-service
+            dockerfile: Dockerfile
+        ports:
+            - 8001:8001
+        environment:
+            - KAFKA_HOST=kafka
+            - KAFKA_PORT=9092
+        depends_on:
+            - kafka
+            - zookeeper
+
+    transaction:
+        build:
+            context: ./transaction-service
+            dockerfile: Dockerfile
+        ports:
+            - 8002:8002
+
+    face_verification:
+        build:
+            context: ./face-verification-service
+            dockerfile: Dockerfile
+        environment:
+            - KAFKA_HOST=kafka
+            - KAFKA_PORT=9092
+            - KAFKA_TOPICS=faces
+        depends_on:
+            - kafka
+            - zookeeper
+
+    gateway:
+        build:
+            context: ./
+            dockerfile: Dockerfile
+        ports:
+            - 8080:8003
+
+
+
