@@ -66,6 +66,9 @@ services:
             dockerfile: Dockerfile
         ports:
             - 8080:8003
+        depends_on:
+            - auth
+            - transaction
 
 
 
