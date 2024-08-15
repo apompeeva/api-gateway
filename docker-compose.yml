@@ -37,6 +37,9 @@ services:
         environment:
             - KAFKA_HOST=kafka
             - KAFKA_PORT=9092
+            - TOPIC=verification
+        volumes:
+          - shared_images:/images
         depends_on:
             - kafka
             - zookeeper
@@ -52,10 +55,14 @@ services:
         build:
             context: ./face-verification-service
             dockerfile: Dockerfile
+        ports:
+            - 8000:8000
         environment:
             - KAFKA_HOST=kafka
             - KAFKA_PORT=9092
-            - KAFKA_TOPICS=faces
+            - TOPIC=verification
+        volumes:
+          - shared_images:/images
         depends_on:
             - kafka
             - zookeeper
@@ -69,6 +76,9 @@ services:
         depends_on:
             - auth
             - transaction
+
+volumes:
+    shared_images:
 
 
 
