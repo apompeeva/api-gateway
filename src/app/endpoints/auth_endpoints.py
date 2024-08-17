@@ -1,5 +1,5 @@
 import httpx
-from fastapi import APIRouter, HTTPException, status, UploadFile
+from fastapi import APIRouter, HTTPException, UploadFile, status
 
 from app.schemas.auth_schemas import AuthResponse, RegisterRequest
 
@@ -45,13 +45,18 @@ async def authorize(request: RegisterRequest):
 
 
 @auth_router.post('/api/verify', status_code=status.HTTP_200_OK)
-async def verify_user(user_id: int, file: UploadFile):
+async def verify_user(user_id: int, image_file: UploadFile):
     """Верификация пользователя."""
     async with httpx.AsyncClient() as client:
         response = await client.post(
             AUTH_SERVICE_URL + '/api/verify' + f'?user_id={user_id}',
             headers=headers,
-            files={'file': (file.filename, file.file, file.content_type), },
+            files={'file': (
+                image_file.filename,
+                image_file.file,
+                image_file.content_type,
+            ),
+            },
         )
         if response.status_code != status.HTTP_200_OK:
             raise HTTPException(
