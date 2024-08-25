@@ -16,6 +16,8 @@ pytest-coverage = "^0.0"
 mypy = "^1.11.1"
 aiokafka = "^0.11.0"
 brotli = "^1.1.0"
+python-dotenv = "^1.0.1"
+uvicorn = "^0.30.6"
 
 [tool.poetry.group.dev.dependencies]
 wemake-python-styleguide = "^0.19.2"

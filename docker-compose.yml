@@ -26,11 +26,13 @@ services:
         depends_on:
             - zookeeper
     postgres:
-        image: postgres:15
-        container_name: db_app
+        image: postgres:16
+        container_name: postgres
         command: -p 1221
         expose:
             - 1221
+        environment:
+            POSTGRES_HOST_AUTH_METHOD: trust
         env_file:
             - .env
         volumes:
@@ -42,7 +44,11 @@ services:
         build:
             context: ./auth-service
             dockerfile: Dockerfile
-        command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8001" ]
+        depends_on:
+            - kafka
+            - zookeeper
+            - postgres
+        command: sh -c "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8001"
         ports:
             - 8001:8001
         environment:
@@ -51,22 +57,33 @@ services:
             - TOPIC=verification
         volumes:
           - shared_images:/images
-        depends_on:
-            - kafka
-            - zookeeper
+
 
     transaction:
+        env_file:
+          - .env
         build:
             context: ./transaction-service
             dockerfile: Dockerfile
         ports:
             - 8002:8002
+        depends_on:
+            - postgres
+            - auth
+        command: sh -c "python wait_for_auth.py && alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8002"
 
     face_verification:
+        env_file:
+          - .env
         build:
             context: ./face-verification-service
             dockerfile: Dockerfile
-        command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+        depends_on:
+            - kafka
+            - zookeeper
+            - postgres
+            - auth
+        command: sh -c "python wait_for_auth.py && alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000"
         ports:
             - 8000:8000
         environment:
@@ -75,9 +92,7 @@ services:
             - TOPIC=verification
         volumes:
           - shared_images:/images
-        depends_on:
-            - kafka
-            - zookeeper
+
 
     gateway:
         build:
@@ -88,6 +103,7 @@ services:
         depends_on:
             - auth
             - transaction
+            - face_verification
 
 volumes:
     shared_images:
