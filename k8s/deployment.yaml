@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-gateway-pompeeva-deployment
+  labels:
+    app: api-gateway-pompeeva
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-gateway-pompeeva
+  template:
+    metadata:
+      labels:
+        app: api-gateway-pompeeva
+    spec:
+      containers:
+      - name: api-gateway-pompeeva
+        image: aipompeeva/api-gateway-shift:latest
+        ports:
+        - containerPort: 8003
+        resources:
+          limits:
+            memory: "500Mi"
+            cpu: "300m"
+          requests:
+            memory: "300Mi"
+            cpu: "200m"
+        readinessProbe:
+          httpGet:
+            path: /healthz/ready
+            port: 8003
+          initialDelaySeconds: 30
+          periodSeconds: 10
