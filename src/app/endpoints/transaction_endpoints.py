@@ -6,7 +6,7 @@ from app.schemas.transaction_schemas import ReportData, Transaction
 
 transaction_router = APIRouter()
 
-TRANSACTION_SERVICE_URL = 'http://transaction:8002'
+TRANSACTION_SERVICE_URL = 'http://transaction-service-pompeeva-service:8002'
 
 headers = {
     'Content-Type': 'application/json',
@@ -23,7 +23,8 @@ async def create_transaction(transaction: Transaction):
         )
         if response.status_code != status.HTTP_200_OK:
             raise HTTPException(
-                status_code=response.status_code, detail=response.text,
+                status_code=response.status_code,
+                detail=response.text,
             )
         else:
             response = await client.post(
@@ -34,7 +35,8 @@ async def create_transaction(transaction: Transaction):
 
             if response.status_code != status.HTTP_200_OK:
                 raise HTTPException(
-                    status_code=response.status_code, detail=response.text,
+                    status_code=response.status_code,
+                    detail=response.text,
                 )
         return response.json()
 
@@ -49,7 +51,8 @@ async def get_report(report_data: ReportData):
         )
         if response.status_code != status.HTTP_200_OK:
             raise HTTPException(
-                status_code=response.status_code, detail=response.text,
+                status_code=response.status_code,
+                detail=response.text,
             )
         else:
             response = await client.post(
@@ -60,6 +63,7 @@ async def get_report(report_data: ReportData):
 
             if response.status_code != status.HTTP_200_OK:
                 raise HTTPException(
-                    status_code=response.status_code, detail=response.text,
+                    status_code=response.status_code,
+                    detail=response.text,
                 )
         return response.json()
