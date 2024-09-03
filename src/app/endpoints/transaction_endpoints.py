@@ -6,7 +6,7 @@ from app.schemas.transaction_schemas import ReportData, Transaction
 
 transaction_router = APIRouter()
 
-TRANSACTION_SERVICE_URL = 'http://transaction-service-pompeeva-service:8002'
+TRANSACTION_SERVICE_URL = 'http://transaction-service-pompeeva:8002'
 
 headers = {
     'Content-Type': 'application/json',

@@ -5,7 +5,7 @@ from app.schemas.auth_schemas import AuthResponse, RegisterRequest
 
 auth_router = APIRouter()
 
-AUTH_SERVICE_URL = 'http://auth-service-pompeeva-service:8001'
+AUTH_SERVICE_URL = 'http://auth-service-pompeeva:8001'
 
 headers = {
     'Content-Type': 'application/json',
