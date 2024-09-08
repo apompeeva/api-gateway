@@ -35,6 +35,11 @@ spec:
               protocol: TCP
           readinessProbe:
             {{- toYaml .Values.readinessProbe | nindent 12 }}
+          env:
+          - name: JAEGER_AGENT_HOST
+            value: "infra-jaeger-agent"
+          - name: JAEGER_AGENT_PORT
+            value: "6831"
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           {{- with .Values.volumeMounts }}
